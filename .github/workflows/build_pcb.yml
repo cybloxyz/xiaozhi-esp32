@@ -17,7 +17,7 @@ jobs:
       - name: Configure and Build
         run: |
           . $IDF_PATH/export.sh
-          rm -rf managed_components
+          rm -rf managed_components build sdkconfig
           cat << 'EOF' > sdkconfig.custom
           CONFIG_BOARD_TYPE_BREAD_COMPACT_WIFI=y
           CONFIG_OLED_SH1106_128X64=y
@@ -26,8 +26,10 @@ jobs:
           CONFIG_PARTITION_TABLE_CUSTOM=y
           CONFIG_PARTITION_TABLE_CUSTOM_FILENAME="partitions/v1/4m.csv"
           EOF
-          export CONFIG=sdkconfig.custom
+          cat sdkconfig.custom >> sdkconfig.defaults
           idf.py set-target esp32s3
+          echo "=== Cek config terbaca ==="
+          grep -E "BOARD_TYPE_BREAD_COMPACT_WIFI|OLED_SH1106|FLASHSIZE_4MB" sdkconfig
           idf.py build
 
       - name: Upload Firmware
