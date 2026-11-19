@@ -7,7 +7,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     container:
-      image: espressif/idf:v5.4.1
+      image: espressif/idf:latest
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
@@ -17,7 +17,7 @@ jobs:
       - name: Configure and Build
         run: |
           . $IDF_PATH/export.sh
-          rm -rf managed_components/espressif__bmi270_sensor
+          rm -rf managed_components
           cat << 'EOF' > sdkconfig.custom
           CONFIG_BOARD_TYPE_BREAD_COMPACT_WIFI=y
           CONFIG_OLED_SH1106_128X64=y
